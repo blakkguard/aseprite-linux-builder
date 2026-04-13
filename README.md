@@ -128,6 +128,12 @@ update-desktop-database /usr/local/share/applications/
 | Libraries | `/usr/local/lib/` |
 
 ---
+##Personal Flatpak (optional)
+If you want a portable flatpak for personal use, build_flatpak.sh and org.aseprite.Aseprite.json are included. The resulting flatpak is for personal use only and should not be distributed.
+
+sudo apt install flatpak-builder
+chmod +x build_flatpak.sh
+./build_flatpak.sh
 
 ## Support
 
