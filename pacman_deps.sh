@@ -22,7 +22,6 @@ sudo pacman -Syu --noconfirm \
     libpng \
     zlib \
     libwebp \
-    git \
     git-lfs \
     python \
     unzip \
