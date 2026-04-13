@@ -22,7 +22,6 @@ sudo zypper install -y \
     libpng16-devel \
     zlib-devel \
     libwebp-devel \
-    git \
     python3 \
     unzip \
     wget \
