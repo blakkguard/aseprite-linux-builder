@@ -20,7 +20,6 @@ sudo cp -r "$STAGED"/lib/*     "$INSTALL_TARGET/lib/"     2>/dev/null || true
 echo "==> Cleaning up build artifacts..."
 rm -rf "$BUILD_DIR/aseprite"
 rm -rf "$BUILD_DIR/aseprite-install"
-rm -rf "$BUILD_DIR/deps"
 rm -rf "$BUILD_DIR/skia"
 
 echo "==> move.sh completed successfully."

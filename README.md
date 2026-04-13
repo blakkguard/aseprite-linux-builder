@@ -11,8 +11,8 @@ Open a terminal and run the block for your distro. This downloads the scripts an
 **apt (Ubuntu, Debian, Mint, Pop!_OS):**
 ```bash
 mkdir aseprite-build && cd aseprite-build
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/apt_deps.sh
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/build.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/apt_deps.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/build.sh
 chmod +x *.sh
 ./apt_deps.sh && ./build.sh
 ```
@@ -20,8 +20,8 @@ chmod +x *.sh
 **dnf (Fedora, RHEL, CentOS Stream, AlmaLinux, Rocky):**
 ```bash
 mkdir aseprite-build && cd aseprite-build
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/dnf_deps.sh
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/build.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/dnf_deps.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/build.sh
 chmod +x *.sh
 ./dnf_deps.sh && ./build.sh
 ```
@@ -29,8 +29,8 @@ chmod +x *.sh
 **pacman (Arch, CachyOS, Manjaro, EndeavourOS, Garuda):**
 ```bash
 mkdir aseprite-build && cd aseprite-build
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/pacman_deps.sh
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/build.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/pacman_deps.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/build.sh
 chmod +x *.sh
 ./pacman_deps.sh && ./build.sh
 ```
@@ -38,8 +38,8 @@ chmod +x *.sh
 **zypper (openSUSE Leap, Tumbleweed):**
 ```bash
 mkdir aseprite-build && cd aseprite-build
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/zypper_deps.sh
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/build.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/zypper_deps.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/build.sh
 chmod +x *.sh
 ./zypper_deps.sh && ./build.sh
 ```
@@ -57,7 +57,7 @@ When the build finishes, Aseprite is staged in `aseprite-install/` next to your 
 If you want to run `aseprite` from anywhere on your system, download and run `move.sh`. This copies Aseprite to `/usr/local` and cleans up all build artifacts:
 
 ```bash
-wget https://raw.githubusercontent.com/blakkguard-wq/aseprite-linux-builder/main/move.sh
+wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/move.sh
 chmod +x move.sh
 ./move.sh
 ```
