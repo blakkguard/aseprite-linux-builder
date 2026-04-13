@@ -22,7 +22,6 @@ sudo dnf install -y \
     libpng-devel \
     zlib-devel \
     libwebp-devel \
-    git \
     git-lfs \
     python3 \
     unzip \
