@@ -11,12 +11,6 @@ SKIA_ZIP="Skia-Linux-Release-x64.zip"
 
 echo "==> Build directory: $BUILD_DIR"
 
-echo "==> Downloading icudtl.dat..."
-mkdir -p "$BUILD_DIR/skia/third_party/externals/icu/flutter/"
-curl --retry 5 --retry-delay 10 --retry-connrefused -L \
-    https://raw.githubusercontent.com/thlorenz/chromium-deps-icu52/master/android/icudtl.dat \
-    -o "$BUILD_DIR/skia/third_party/externals/icu/flutter/icudtl.dat"
-
 echo "==> Downloading pre-built Skia..."
 wget --tries=5 --wait=10 --retry-connrefused \
     https://github.com/aseprite/skia/releases/download/${SKIA_RELEASE}/${SKIA_ZIP}
