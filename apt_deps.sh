@@ -2,7 +2,7 @@
 set -e
 # Covers: Ubuntu, Kubuntu, Debian, Linux Mint, Pop!_OS, elementary OS
 
-LIBJPEG_TURBO_VERSION="3.0.1"
+LIBJPEG_TURBO_VERSION="3.1.0"
 WORK_DIR="$(mktemp -d)"
 
 echo "==> Installing system dependencies (apt)..."
@@ -23,25 +23,24 @@ sudo apt-get install -y \
     libpng-dev \
     zlib1g-dev \
     libwebp-dev \
-    git-lfs \
+    git \
     python3 \
     unzip \
     wget \
     curl \
     gn
 
-git lfs install
-
 echo "==> Building and installing libjpeg-turbo ${LIBJPEG_TURBO_VERSION}..."
 
 cd "$WORK_DIR"
-wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/${LIBJPEG_TURBO_VERSION}.tar.gz
-tar -xzf ${LIBJPEG_TURBO_VERSION}.tar.gz
+wget https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/${LIBJPEG_TURBO_VERSION}/libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz
+tar -xzf libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz
 
 cmake \
     -S "$WORK_DIR/libjpeg-turbo-${LIBJPEG_TURBO_VERSION}" \
     -B "$WORK_DIR/libjpeg-turbo-build" \
-    -DCMAKE_BUILD_TYPE=RELEASE
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
 cmake --build "$WORK_DIR/libjpeg-turbo-build" -- -j$(nproc)
 sudo cmake --install "$WORK_DIR/libjpeg-turbo-build"

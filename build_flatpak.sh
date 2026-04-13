@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+#Install git-lfs dependecy for Flatpak build
+apt install git-lfs
+
 BUILD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FLATPAK_ID="org.aseprite.Aseprite"
 BUNDLE="aseprite.flatpak"
