@@ -23,7 +23,6 @@ sudo apt-get install -y \
     libpng-dev \
     zlib1g-dev \
     libwebp-dev \
-    git \
     git-lfs \
     python3 \
     unzip \
