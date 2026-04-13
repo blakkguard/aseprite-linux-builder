@@ -1,12 +1,12 @@
 # Aseprite Linux Builder
 
-Build [Aseprite](https://www.aseprite.org/) from source on Linux. 
+Build [Aseprite](https://www.aseprite.org/) from source on Linux. Just wget, chmod, and run.
 
 ---
 
 ## Quick Start
 
-Open a terminal and run the block for your distro. This downloads the scripts and builds Aseprite in place.
+Open a terminal and run the block for your distro. Download the deps script for your distro and `build.sh`, make them executable, then run the deps script first, followed by the build script.
 
 **apt (Ubuntu, Debian, Mint, Pop!_OS):**
 ```bash
