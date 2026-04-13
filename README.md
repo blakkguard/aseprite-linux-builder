@@ -1,47 +1,53 @@
 # Aseprite Linux Builder
 
-Build [Aseprite](https://www.aseprite.org/) from source on Linux. No git required — just wget, chmod, and run.
+Build Aseprite from source on Linux.
 
 ---
 
 ## Quick Start
 
-Open a terminal and run the block for your distro. This downloads the scripts and builds Aseprite in place.
+Install git if you don't have it, clone the repo, and run the scripts for your distro.
 
-**apt (Ubuntu, Debian, Mint, Pop!_OS):**
+**Install git:**
 ```bash
-mkdir aseprite-build && cd aseprite-build
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/apt_deps.sh
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/build.sh
-chmod +x *.sh
-./apt_deps.sh && ./build.sh
+# apt (Ubuntu, Debian, Mint, Pop!_OS)
+sudo apt install git
+
+# dnf (Fedora, RHEL, CentOS Stream)
+sudo dnf install git
+
+# pacman (Arch, CachyOS, Manjaro)
+sudo pacman -S git
+
+# zypper (openSUSE)
+sudo zypper install git
 ```
 
-**dnf (Fedora, RHEL, CentOS Stream, AlmaLinux, Rocky):**
+**Clone the repo:**
 ```bash
-mkdir aseprite-build && cd aseprite-build
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/dnf_deps.sh
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/build.sh
+git clone https://github.com/blakkguard/aseprite-linux-builder.git
+cd aseprite-linux-builder
 chmod +x *.sh
-./dnf_deps.sh && ./build.sh
 ```
 
-**pacman (Arch, CachyOS, Manjaro, EndeavourOS, Garuda):**
+**Run the deps script for your distro:**
 ```bash
-mkdir aseprite-build && cd aseprite-build
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/pacman_deps.sh
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/build.sh
-chmod +x *.sh
-./pacman_deps.sh && ./build.sh
+# apt (Ubuntu, Debian, Mint, Pop!_OS)
+./apt_deps.sh
+
+# dnf (Fedora, RHEL, CentOS Stream, AlmaLinux, Rocky)
+./dnf_deps.sh
+
+# pacman (Arch, CachyOS, Manjaro, EndeavourOS, Garuda)
+./pacman_deps.sh
+
+# zypper (openSUSE Leap, Tumbleweed)
+./zypper_deps.sh
 ```
 
-**zypper (openSUSE Leap, Tumbleweed):**
+**Build Aseprite:**
 ```bash
-mkdir aseprite-build && cd aseprite-build
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/zypper_deps.sh
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/build.sh
-chmod +x *.sh
-./zypper_deps.sh && ./build.sh
+./build.sh
 ```
 
 When the build finishes, Aseprite is staged in `aseprite-install/` next to your scripts. Run it directly from there:
@@ -52,23 +58,57 @@ When the build finishes, Aseprite is staged in `aseprite-install/` next to your 
 
 ---
 
-## Install System-Wide (optional)
+## What to Do With the Build
 
-If you want to run `aseprite` from anywhere on your system, download and run `move.sh`. This copies Aseprite to `/usr/local` and cleans up all build artifacts:
+You have three options once the build finishes:
 
+### Option 1 — Run in place
+Just run it directly from the build folder — no installation needed:
 ```bash
-wget https://raw.githubusercontent.com/blakkguard/aseprite-linux-builder/main/move.sh
-chmod +x move.sh
+./aseprite-install/bin/aseprite
+```
+
+### Option 2 — Install system-wide with move.sh
+Copies Aseprite to `/usr/local` so you can launch it from anywhere, then cleans up all build artifacts:
+```bash
 ./move.sh
 ```
 
 After this, launch Aseprite from anywhere:
-
 ```bash
 aseprite
 ```
 
-The binary will be at `/usr/local/bin/aseprite`.
+### Option 3 — Build a personal Flatpak
+If you want a portable flatpak you can install on any distro, use the included flatpak scripts. The resulting flatpak is for **personal use only and must not be distributed**.
+
+Install flatpak-builder first:
+```bash
+# apt
+sudo apt install flatpak-builder
+
+# dnf
+sudo dnf install flatpak-builder
+
+# pacman
+sudo pacman -S flatpak-builder
+
+# zypper
+sudo zypper install flatpak-builder
+```
+
+Then build the flatpak:
+```bash
+./build_flatpak.sh
+```
+
+Once it finishes, install and run it:
+```bash
+flatpak install aseprite.flatpak
+flatpak run org.aseprite.Aseprite
+```
+
+The flatpak is fully self-contained — Skia, libjpeg-turbo, and Aseprite are all bundled inside. Install it on any distro that has flatpak installed.
 
 ---
 
@@ -82,6 +122,8 @@ The binary will be at `/usr/local/bin/aseprite`.
 | `zypper_deps.sh` | Dependencies for openSUSE Leap, Tumbleweed, SUSE Enterprise |
 | `build.sh` | Downloads Skia, clones and compiles Aseprite |
 | `move.sh` | Copies Aseprite to `/usr/local` and cleans up all build artifacts |
+| `build_flatpak.sh` | Builds a self-contained personal flatpak |
+| `org.aseprite.Aseprite.json` | Flatpak manifest |
 
 The deps script installs all system libraries and builds libjpeg-turbo from source. It will ask for your sudo password once. `build.sh` runs without sudo and builds everything in place.
 
@@ -128,11 +170,6 @@ update-desktop-database /usr/local/share/applications/
 | Libraries | `/usr/local/lib/` |
 
 ---
-##Personal Flatpak (optional)
-If you want a portable flatpak for personal use, build_flatpak.sh and org.aseprite.Aseprite.json are included. The resulting flatpak is for personal use only and should not be distributed.
-
-sudo apt install flatpak-builder
-./build_flatpak.sh
 
 ## Support
 
@@ -172,4 +209,4 @@ Building from source is permitted under the license for personal use, but purcha
 - The build takes a while — Aseprite is a large codebase. Let it run.
 - Each deps script builds libjpeg-turbo from source and installs it system-wide. This avoids version conflicts with distro packages.
 - The `skia/`, `aseprite/`, and `aseprite-install/` folders are all cleaned up by `move.sh`. If you skipped `move.sh`, you can safely delete them manually once Aseprite is confirmed working.
-- GitHub does not preserve file permissions — always run `chmod +x *.sh` after downloading.
+- GitHub does not preserve file permissions — always run `chmod +x *.sh` after cloning.
