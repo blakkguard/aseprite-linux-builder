@@ -23,10 +23,14 @@ sudo pacman -Syu --noconfirm \
     zlib \
     libwebp \
     git \
+    git-lfs \
     python \
     unzip \
     wget \
-    curl
+    curl \
+    gn
+
+git lfs install
 
 echo "==> Building and installing libjpeg-turbo ${LIBJPEG_TURBO_VERSION}..."
 

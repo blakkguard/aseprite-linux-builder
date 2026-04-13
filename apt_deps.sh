@@ -24,11 +24,14 @@ sudo apt-get install -y \
     zlib1g-dev \
     libwebp-dev \
     git \
+    git-lfs \
     python3 \
     unzip \
     wget \
     curl \
     gn
+
+git lfs install
 
 echo "==> Building and installing libjpeg-turbo ${LIBJPEG_TURBO_VERSION}..."
 

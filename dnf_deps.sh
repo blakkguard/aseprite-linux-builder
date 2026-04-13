@@ -23,10 +23,14 @@ sudo dnf install -y \
     zlib-devel \
     libwebp-devel \
     git \
+    git-lfs \
     python3 \
     unzip \
     wget \
-    curl
+    curl \
+    gn
+
+git lfs install
 
 echo "==> Building and installing libjpeg-turbo ${LIBJPEG_TURBO_VERSION}..."
 
