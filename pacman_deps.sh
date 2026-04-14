@@ -5,9 +5,19 @@ set -e
 LIBJPEG_TURBO_VERSION="3.1.0"
 WORK_DIR="$(mktemp -d)"
 
+echo "==> Detecting zlib provider..."
+
+if pacman -Q zlib-ng-compat &>/dev/null; then
+    ZLIB_PKG="zlib-ng-compat"
+else
+    ZLIB_PKG="zlib"
+fi
+
+echo "==> Using: $ZLIB_PKG"
+
 echo "==> Installing system dependencies (pacman)..."
 
-sudo pacman -Syu --noconfirm \
+sudo pacman -S --needed --noconfirm \
     gcc \
     cmake \
     ninja \
@@ -20,7 +30,7 @@ sudo pacman -Syu --noconfirm \
     harfbuzz \
     freetype2 \
     libpng \
-    zlib \
+    "$ZLIB_PKG" \
     libwebp \
     git \
     python \
