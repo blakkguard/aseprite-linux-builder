@@ -1,4 +1,18 @@
 # Aseprite Linux Builder
+#
+---
+## This content was produced by Anrhropic Claude
+## Why This Is Hard and Why These Scripts Work
+
+Building Aseprite from source on Linux is not straightforward. Aseprite uses Skia as its rendering backend — the same graphics library that powers Google Chrome. Skia is a massive codebase with backends for Apple Metal, Vulkan, Dawn, and more. On Linux, most of those backends either fail to build or pull in dependencies that conflict with what your distro has installed. Finding the right combination of cmake flags to strip out what you don't need and keep what you do took significant trial and error.
+
+The second problem is libjpeg-turbo. Distros ship different versions, and Aseprite is particular about which one it links against. The solution is to build libjpeg-turbo from a known-good source version and install it system-wide before the Aseprite build starts, so cmake always finds the right one regardless of what your distro provides.
+
+The third problem is that every distro is different. The same build that works on Fedora fails on Arch because a package has a different name, or a library lives in a different path, or a version is too new or too old.
+
+The Podman approach solves all of this. Instead of fighting your host distro, the build happens inside a clean Ubuntu 24.04 container with a known, stable set of packages. The container handles all dependency installation, builds libjpeg-turbo from source, downloads the correct pre-built Skia binary, and compiles Aseprite with the exact cmake flags that produce a working binary. Your host system never gets touched. When the build finishes, the output is copied out of the container and onto your system with `move.sh`.
+
+The result is that building Aseprite from source on any Linux distro comes down to two things: install `git` and `podman`, then run `install.sh`. Everything else is handled.
 
 Build Aseprite from source on Linux.
 
