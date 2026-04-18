@@ -2,8 +2,7 @@
 set -e
 
 # Builds Aseprite inside a clean Ubuntu 24.04 Podman container.
-# Run this from the root of your repo. build.sh will write output
-# to ./aseprite-install in the current directory.
+# Run this from the root of your repo. Output lands in ./aseprite-install.
 #
 # Usage: ./podman_build.sh
 
@@ -69,4 +68,13 @@ podman run --rm \
         bash build.sh
     '
 
-echo "==> Done. Aseprite is staged at: $(pwd)/aseprite-install"
+echo ""
+echo "==> Build complete. Aseprite is staged at: $(pwd)/aseprite-install"
+echo "    You can run it directly: ./aseprite-install/bin/aseprite"
+echo ""
+read -rp "==> Install system-wide to /usr/local now? (runs move.sh) [y/N] " answer
+if [[ "$answer" =~ ^[Yy]$ ]]; then
+    sudo bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/move.sh"
+else
+    echo "==> Skipped. Run sudo ./move.sh whenever you're ready."
+fi
