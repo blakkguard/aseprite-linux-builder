@@ -99,8 +99,11 @@ flatpak run org.aseprite.Aseprite
 After installing, create a `.desktop` entry so Aseprite appears in your application menu:
 
 ```bash
-sudo tee /usr/local/share/applications/aseprite.desktop > /dev/null << 'DESKTOP'
-[Desktop Entry]
+# 1. Create the directory
+sudo mkdir -p /usr/local/share/applications
+
+# 2. Write the file using a simple string (compatible with Fish and Bash)
+echo "[Desktop Entry]
 Name=Aseprite
 Comment=Animated Sprite Editor & Pixel Art Tool
 Exec=aseprite
@@ -109,14 +112,13 @@ Terminal=false
 Type=Application
 Categories=Graphics;2DGraphics;RasterGraphics;
 Keywords=pixel;art;sprite;animation;
-StartupWMClass=aseprite
-DESKTOP
+StartupWMClass=aseprite" | sudo tee /usr/local/share/applications/aseprite.desktop > /dev/null
+
+# 3. Update the database
+sudo update-desktop-database /usr/local/share/applications/
 ```
 
-Refresh your menu:
-```bash
-update-desktop-database /usr/local/share/applications/
-```
+
 
 **KDE Plasma:** If it doesn't appear, press `Alt+F2` and run `kbuildsycoca6`.  
 **GNOME:** Log out and back in.  
