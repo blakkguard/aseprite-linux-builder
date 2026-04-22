@@ -2,11 +2,11 @@
 set -e
 
 # Builds Aseprite inside a clean Ubuntu 24.04 Podman container.
-# Run this from the root of your repo. Output lands in ./aseprite-install.
+# Output lands in ./aseprite-install on the host via volume mount.
 #
 # Usage:
-#   ./podman_build.sh              # builds, then prompts to install
-#   ./podman_build.sh --auto-move  # builds and installs without prompting
+#   ./podman_build.sh        # builds and stages only
+#   sudo ./move.sh           # install system-wide when ready
 
 LIBJPEG_TURBO_VERSION="3.1.0"
 IMAGE="ubuntu:24.04"
@@ -72,19 +72,7 @@ podman run --rm \
     '
 
 echo ""
-echo "==> Build complete. Aseprite is staged at: $(pwd)/aseprite-install"
-echo "    You can run it directly: ./aseprite-install/bin/aseprite"
+echo "==> Build complete. Aseprite staged at: $(pwd)/aseprite-install"
+echo "    Run directly: ./aseprite-install/bin/aseprite"
+echo "    Install system-wide: sudo ./move.sh"
 echo ""
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-if [[ "${1}" == "--auto-move" ]]; then
-    sudo bash "$SCRIPT_DIR/move.sh"
-else
-    read -rp "==> Install system-wide to /usr/local now? (runs move.sh) [y/N] " answer
-    if [[ "$answer" =~ ^[Yy]$ ]]; then
-        sudo bash "$SCRIPT_DIR/move.sh"
-    else
-        echo "==> Skipped. Run sudo ./move.sh whenever you're ready."
-    fi
-fi

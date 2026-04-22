@@ -9,9 +9,6 @@ echo "==> Installing system dependencies (apt)..."
 
 sudo apt-get update -y
 sudo apt-get install -y \
-    podman \
-    curl \
-    unzip \
     g++ \
     cmake \
     ninja-build \
@@ -28,7 +25,9 @@ sudo apt-get install -y \
     libwebp-dev \
     git \
     python3 \
+    unzip \
     wget \
+    curl \
     gn
 
 echo "==> Building and installing libjpeg-turbo ${LIBJPEG_TURBO_VERSION}..."
