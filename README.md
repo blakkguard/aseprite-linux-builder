@@ -15,12 +15,11 @@ On Linux, Aseprite is built inside a clean Ubuntu 24.04 Podman container, then m
 
 ### Quick Start
 
-You need `curl` and `unzip`. That's it.
+You need `git`. That's it.
 
 ```bash
-curl -fsSL https://github.com/blakkguard/aseprite-linux-builder/archive/refs/heads/main.zip -o builder.zip
-unzip builder.zip
-cd aseprite-linux-builder-main
+git clone https://github.com/blakkguard/aseprite-linux-builder.git
+cd aseprite-linux-builder
 chmod +x *.sh
 ./install.sh
 ```
@@ -45,7 +44,7 @@ To build and run without installing system-wide:
 ./podman_build.sh
 ```
 
-Aseprite stages at `./aseprite-install`. You can run it directly from there:
+Aseprite stages at `./aseprite-install`. Run it directly from there:
 
 ```bash
 ./aseprite-install/bin/aseprite
@@ -88,11 +87,9 @@ sudo ./move.sh
 
 ### Quick Start
 
-Download the zip from GitHub, extract it, then run from an elevated PowerShell prompt:
-
 ```powershell
-Expand-Archive builder.zip
-cd aseprite-linux-builder-main
+git clone https://github.com/blakkguard/aseprite-linux-builder.git
+cd aseprite-linux-builder
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\install.ps1
 ```
@@ -153,7 +150,7 @@ Edit the version variables at the top of `build.sh` / `build.ps1` to change what
 - The build takes 15–30 minutes depending on your hardware. Let it run.
 - A stable internet connection is required — Skia and Aseprite source are downloaded during the build. The scripts include retry logic for flaky connections.
 - `move.sh` / `move.ps1` clean up all build artifacts after installing.
-- No `git` required — use `curl` on Linux or the GitHub zip download on Windows.
+- `install.sh` will install `git` automatically if it isn't already present.
 
 ---
 

@@ -73,6 +73,6 @@ podman run --rm \
 
 echo ""
 echo "==> Build complete. Aseprite staged at: $(pwd)/aseprite-install"
-echo "    Run directly: ./aseprite-install/bin/aseprite"
+echo "    Run directly:        ./aseprite-install/bin/aseprite"
 echo "    Install system-wide: sudo ./move.sh"
 echo ""
