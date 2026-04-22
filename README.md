@@ -32,7 +32,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
-That's it. `install.sh` clones the repo, builds Aseprite inside a clean Ubuntu 24.04 Podman container, installs it to `/usr/local`, cleans up everything, and launches Aseprite. Your sudo password is required once when installing.
+That's it. `install.sh` installs `git` and `podman` if needed, clones this repo, builds Aseprite inside a clean Ubuntu 24.04 Podman container, installs it to `/usr/local`, creates a desktop menu entry, and cleans up everything. Your sudo password is required once during installation.
 
 > **Already have the files?** If you downloaded the ZIP from GitHub, skip the clone — just `cd` into the folder, `chmod +x *.sh`, and run `./podman_build.sh` directly.
 
@@ -60,7 +60,7 @@ Install dependencies for your distro, then build:
 ./zypper_deps.sh
 ```
 
-Then build:
+Then build and install:
 ```bash
 ./build.sh
 sudo ./move.sh
@@ -94,50 +94,18 @@ flatpak run org.aseprite.Aseprite
 
 ---
 
-## Adding Aseprite to Your App Menu
-
-After installing, create a `.desktop` entry so Aseprite appears in your application menu:
-
-```bash
-# 1. Create the directory
-sudo mkdir -p /usr/local/share/applications
-
-# 2. Write the file using a simple string (compatible with Fish and Bash)
-echo "[Desktop Entry]
-Name=Aseprite
-Comment=Animated Sprite Editor & Pixel Art Tool
-Exec=aseprite
-Icon=/usr/local/share/aseprite/data/icons/ase256.png
-Terminal=false
-Type=Application
-Categories=Graphics;2DGraphics;RasterGraphics;
-Keywords=pixel;art;sprite;animation;
-StartupWMClass=aseprite" | sudo tee /usr/local/share/applications/aseprite.desktop > /dev/null
-
-# 3. Update the database
-sudo update-desktop-database /usr/local/share/applications/
-```
-
-
-
-**KDE Plasma:** If it doesn't appear, press `Alt+F2` and run `kbuildsycoca6`.  
-**GNOME:** Log out and back in.  
-**XFCE / MATE / Cinnamon:** Right-click the menu and choose Reload, or log out and back in.
-
----
-
 ## What the Scripts Do
 
 | Script | What it does |
 |---|---|
-| `install.sh` | Full install in one shot — clone, build, install, clean up |
-| `podman_build.sh` | Builds inside Ubuntu 24.04 container, works on any host distro |
+| `install.sh` | Full install in one shot — installs `git`/`podman`, clones the repo, builds, installs, creates the desktop entry, and cleans up |
+| `podman_build.sh` | Builds inside an Ubuntu 24.04 container, works on any host distro; prompts to install or use `--auto-move` to skip the prompt |
 | `apt_deps.sh` | Dependencies for Ubuntu, Debian, Mint, Pop!_OS |
 | `dnf_deps.sh` | Dependencies for Fedora, RHEL, CentOS Stream, AlmaLinux, Rocky |
 | `pacman_deps.sh` | Dependencies for Arch, CachyOS, Manjaro, EndeavourOS, Garuda |
 | `zypper_deps.sh` | Dependencies for openSUSE Leap, Tumbleweed |
 | `build.sh` | Downloads Skia, clones and compiles Aseprite |
-| `move.sh` | Copies Aseprite to `/usr/local`, cleans all build artifacts |
+| `move.sh` | Copies Aseprite to `/usr/local`, creates the desktop menu entry, and cleans all build artifacts |
 | `build_flatpak.sh` | Builds a self-contained personal Flatpak |
 | `org.aseprite.Aseprite.json` | Flatpak manifest |
 
@@ -151,6 +119,7 @@ sudo update-desktop-database /usr/local/share/applications/
 | Shared data (icons, palettes, etc.) | `/usr/local/share/aseprite/` |
 | Icons | `/usr/local/share/aseprite/data/icons/` |
 | Libraries | `/usr/local/lib/` |
+| Desktop entry | `/usr/local/share/applications/aseprite.desktop` |
 
 ---
 
@@ -170,8 +139,19 @@ Edit the version variables at the top of `build.sh` to change what gets built.
 
 - The build takes 15–30 minutes depending on your hardware. Let it run.
 - A stable internet connection is required — Skia and Aseprite source are downloaded during the build. The scripts include retry logic for flaky connections.
-- `move.sh` cleans up `aseprite/`, `aseprite-install/`, `skia/`, and any Flatpak artifacts.
+- `move.sh` creates the `.desktop` menu entry automatically and cleans up `aseprite/`, `aseprite-install/`, `skia/`, and any Flatpak artifacts.
 - GitHub does not preserve file permissions — always run `chmod +x *.sh` after cloning.
+- After `install.sh` finishes, the cloned script folder is removed. Keep the scripts around if you plan to rebuild or update.
+
+---
+
+## Desktop Menu Entry
+
+The desktop entry is created automatically by `move.sh`. If Aseprite doesn't appear in your application menu after install, try the following:
+
+**KDE Plasma:** Press `Alt+F2` and run `kbuildsycoca6`.  
+**GNOME:** Log out and back in.  
+**XFCE / MATE / Cinnamon:** Right-click the menu and choose Reload, or log out and back in.
 
 ---
 
