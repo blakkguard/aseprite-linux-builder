@@ -7,90 +7,23 @@ Aseprite is a professional pixel art and animation tool. It costs $19.99 and is 
 
 These scripts let you build Aseprite from source on Linux for personal use, which is permitted under the Aseprite license. If you find it useful, buy it and support the developers who made it.
 
+Aseprite is built inside a clean Ubuntu 24.04 Podman container, then moved to your system. Your host is never touched during the build — only the final install writes to `/usr/local`.
+
 ---
 
 ## Quick Start
 
-Install `git` and `podman`, then run `install.sh`:
+You need `curl` and `unzip`. That's it.
 
 ```bash
-# Fedora, RHEL, CentOS Stream
-sudo dnf install git podman
-
-# Arch, CachyOS, Manjaro
-sudo pacman -S git podman
-
-# Ubuntu, Debian, Mint, Pop!_OS
-sudo apt install git podman
-
-# openSUSE
-sudo zypper install git podman
-```
-
-```bash
-chmod +x install.sh
+curl -fsSL https://github.com/blakkguard/aseprite-linux-builder/archive/refs/heads/main.zip -o builder.zip
+unzip builder.zip
+cd aseprite-linux-builder-main
+chmod +x *.sh
 ./install.sh
 ```
 
-That's it. `install.sh` installs `git` and `podman` if needed, clones this repo, builds Aseprite inside a clean Ubuntu 24.04 Podman container, installs it to `/usr/local`, creates a desktop menu entry, and cleans up everything. Your sudo password is required once during installation.
-
-> **Already have the files?** If you downloaded the ZIP from GitHub, skip the clone — just `cd` into the folder, `chmod +x *.sh`, and run `./podman_build.sh` directly.
-
----
-
-## Other Build Options
-
-The Podman path above is recommended, but you can also build natively or as a personal Flatpak.
-
-### Native Build
-
-Install dependencies for your distro, then build:
-
-```bash
-# apt (Ubuntu, Debian, Mint, Pop!_OS)
-./apt_deps.sh
-
-# dnf (Fedora, RHEL, CentOS Stream, AlmaLinux, Rocky)
-./dnf_deps.sh
-
-# pacman (Arch, CachyOS, Manjaro, EndeavourOS, Garuda)
-./pacman_deps.sh
-
-# zypper (openSUSE Leap, Tumbleweed)
-./zypper_deps.sh
-```
-
-Then build and install:
-```bash
-./build.sh
-sudo ./move.sh
-```
-
-### Personal Flatpak
-
-Builds a self-contained Flatpak for personal use. **Do not distribute the resulting Flatpak.**
-
-Install `flatpak-builder` first:
-```bash
-# apt
-sudo apt install flatpak-builder
-
-# dnf
-sudo dnf install flatpak-builder
-
-# pacman
-sudo pacman -S flatpak-builder
-
-# zypper
-sudo zypper install flatpak-builder
-```
-
-Then build and install:
-```bash
-./build_flatpak.sh
-flatpak install aseprite.flatpak
-flatpak run org.aseprite.Aseprite
-```
+`install.sh` will detect your distro, install Podman, build Aseprite inside a clean Ubuntu 24.04 container, and install it to `/usr/local`. Your sudo password is required once. When it finishes, press the super key and launch Aseprite.
 
 ---
 
@@ -98,16 +31,22 @@ flatpak run org.aseprite.Aseprite
 
 | Script | What it does |
 |---|---|
-| `install.sh` | Full install in one shot — installs `git`/`podman`, clones the repo, builds, installs, creates the desktop entry, and cleans up |
-| `podman_build.sh` | Builds inside an Ubuntu 24.04 container, works on any host distro; prompts to install or use `--auto-move` to skip the prompt |
-| `apt_deps.sh` | Dependencies for Ubuntu, Debian, Mint, Pop!_OS |
-| `dnf_deps.sh` | Dependencies for Fedora, RHEL, CentOS Stream, AlmaLinux, Rocky |
-| `pacman_deps.sh` | Dependencies for Arch, CachyOS, Manjaro, EndeavourOS, Garuda |
-| `zypper_deps.sh` | Dependencies for openSUSE Leap, Tumbleweed |
-| `build.sh` | Downloads Skia, clones and compiles Aseprite |
-| `move.sh` | Copies Aseprite to `/usr/local`, creates the desktop menu entry, and cleans all build artifacts |
-| `build_flatpak.sh` | Builds a self-contained personal Flatpak |
-| `org.aseprite.Aseprite.json` | Flatpak manifest |
+| `install.sh` | Detects your distro, installs Podman, runs the full build and install in sequence |
+| `podman_build.sh` | Builds Aseprite inside an Ubuntu 24.04 container and stages the output locally |
+| `apt_deps.sh` | Runs inside the container — installs build tools and compiles libjpeg-turbo |
+| `build.sh` | Runs inside the container — downloads Skia, clones and compiles Aseprite |
+| `move.sh` | Runs on the host — copies Aseprite to `/usr/local`, creates the app menu entry, cleans up |
+
+---
+
+## Build in Place
+
+If you want to build without installing system-wide, run `podman_build.sh` directly. Aseprite will be staged at `./aseprite-install` and you can run it from there. When you're ready to install, run `move.sh`:
+
+```bash
+./podman_build.sh
+sudo ./move.sh
+```
 
 ---
 
@@ -119,7 +58,6 @@ flatpak run org.aseprite.Aseprite
 | Shared data (icons, palettes, etc.) | `/usr/local/share/aseprite/` |
 | Icons | `/usr/local/share/aseprite/data/icons/` |
 | Libraries | `/usr/local/lib/` |
-| Desktop entry | `/usr/local/share/applications/aseprite.desktop` |
 
 ---
 
@@ -139,30 +77,17 @@ Edit the version variables at the top of `build.sh` to change what gets built.
 
 - The build takes 15–30 minutes depending on your hardware. Let it run.
 - A stable internet connection is required — Skia and Aseprite source are downloaded during the build. The scripts include retry logic for flaky connections.
-- `move.sh` creates the `.desktop` menu entry automatically and cleans up `aseprite/`, `aseprite-install/`, `skia/`, and any Flatpak artifacts.
-- GitHub does not preserve file permissions — always run `chmod +x *.sh` after cloning.
-- After `install.sh` finishes, the cloned script folder is removed. Keep the scripts around if you plan to rebuild or update.
-
----
-
-## Desktop Menu Entry
-
-The desktop entry is created automatically by `move.sh`. If Aseprite doesn't appear in your application menu after install, try the following:
-
-**KDE Plasma:** Press `Alt+F2` and run `kbuildsycoca6`.  
-**GNOME:** Log out and back in.  
-**XFCE / MATE / Cinnamon:** Right-click the menu and choose Reload, or log out and back in.
+- `move.sh` cleans up all build artifacts after installing.
+- These scripts are hosted on GitHub. `curl` is used to download them — no `git` required.
 
 ---
 
 ## Why Building Aseprite From Source Is Hard
 
-Aseprite uses Skia as its rendering backend — the same graphics library that powers Google Chrome. Skia is a massive codebase with backends for Apple Metal, Vulkan, Dawn, and more. On Linux, most of those backends either fail to build or pull in dependencies that conflict with what your distro has installed. Finding the right cmake flags to strip out what you don't need and keep what you do took significant time to work out.
+Aseprite uses Skia as its rendering backend — the same graphics library that powers Google Chrome. Skia is a massive codebase with backends for Apple Metal, Vulkan, Dawn, and more. On Linux, most of those backends either fail to build or pull in dependencies that conflict with what your distro ships. Finding the right CMake flags took significant time to work out.
 
-The second problem is libjpeg-turbo. Distros ship different versions, and Aseprite is particular about which one it links against. The solution is to build libjpeg-turbo from a known-good source version and install it system-wide before the Aseprite build starts, so cmake always finds the right one regardless of what your distro provides.
+The second problem is libjpeg-turbo. Distros ship different versions, and Aseprite is particular about which one it links against. The solution is to build libjpeg-turbo from a known-good version before the Aseprite build starts, so CMake always finds the right one.
 
 The third problem is that every distro is different. The same build that works on Fedora fails on Arch because a package has a different name, or a library lives in a different path, or a version is too new or too old.
 
-The Podman approach solves all three. The build happens inside a clean Ubuntu 24.04 container with a known, stable set of packages. Your host system never gets touched. When the build finishes, the output lands on your system via `move.sh` and the container is discarded.
-
-The result: install `git` and `podman`, run `install.sh`, enter your sudo password once. Everything else is handled.
+The Podman approach solves all three. The build happens inside a clean Ubuntu 24.04 container with a known, stable set of packages. Your host system is never touched during the build. When it finishes, the output is moved to your system by `move.sh` and the container is discarded.
