@@ -1,13 +1,14 @@
 # Aseprite Linux Builder
 
-Aseprite is a professional pixel art and animation tool. It costs $19.99 and is worth every penny — please consider buying it officially:
+Aseprite is a professional pixel art and animation tool. You can purchase it directly from the website for $19.99. This allows the develpers to continue to support Aseprite and continue to add new features. It comes with a Steam key.
 
-- [Aseprite on Steam](https://store.steampowered.com/app/431730/Aseprite/) — $19.99
+- [Aseprite Official](https://www.aseprite.org/buy/)
+- [Aseprite on Steam](https://store.steampowered.com/app/431730/Aseprite/)
 - [Aseprite on itch.io](https://dacap.itch.io/aseprite)
 
 These scripts let you build Aseprite from source on Linux for personal use, which is permitted under the Aseprite license. If you find it useful, buy it and support the developers who made it.
 
-On Linux, Aseprite is built inside a clean Ubuntu 24.04 Podman container, then moved to your system. Your system is only written to at the final install step.
+On Linux,Aseprite can built inside of a clean Ubuntu 24.04 podman container, then moved to your system. Your system is only written to at the final install step. The clean up script adds a .desktop file and it is Aseprite is fully intregrated.
 
 ---
 
