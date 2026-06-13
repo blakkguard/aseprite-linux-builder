@@ -6,9 +6,9 @@ Aseprite is a professional pixel art and animation tool. You can purchase it dir
 - [Aseprite on Steam](https://store.steampowered.com/app/431730/Aseprite/)
 - [Aseprite on itch.io](https://dacap.itch.io/aseprite)
 
-These scripts let you build Aseprite from source on Linux for personal use, which is permitted under the Aseprite license. If you find it useful, buy it and support the developers who made it.
+These scripts let you build Aseprite from source on Linux for personal use, which is permitted under the Aseprite license. If you find it useful, please consider purchasing it to support the developers who made it.
 
-On Linux,Aseprite can built inside of a clean Ubuntu 24.04 podman container, then moved to your system. Your system is only written to at the final install step. The clean up script adds a .desktop file and it is Aseprite is fully intregrated.
+On Linux, Aseprite can be built inside of a clean Ubuntu 24.04 podman container, then moved to your system. Your system is only written to at the final install step. The clean up script adds a .desktop file and Aseprite is fully intregrated.
 
 ---
 
