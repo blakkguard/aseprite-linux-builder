@@ -26,7 +26,11 @@ echo "==> Cloning Aseprite ${ASEPRITE_VERSION}..."
 CLONE_SUCCESS=false
 for attempt in 1 2 3 4 5; do
     echo "    Clone attempt $attempt of 5..."
-    if git clone --recursive --depth 1 -b ${ASEPRITE_VERSION} https://github.com/aseprite/aseprite.git; then
+    if git \
+        -c http.connectTimeout=30 \
+        -c http.lowSpeedLimit=1000 \
+        -c http.lowSpeedTime=60 \
+        clone --recursive --depth 1 -b ${ASEPRITE_VERSION} https://github.com/aseprite/aseprite.git; then
         CLONE_SUCCESS=true
         break
     else
