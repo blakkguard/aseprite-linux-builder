@@ -19,6 +19,11 @@ if [ ! -d "$STAGED" ]; then
     exit 1
 fi
 
+mkdir -p "$INSTALL_TARGET/bin"
+mkdir -p "$INSTALL_TARGET/share"
+mkdir -p "$INSTALL_TARGET/lib"
+mkdir -p "$INSTALL_TARGET/share/applications"
+
 sudo cp -r "$STAGED"/bin/*   "$INSTALL_TARGET/bin/"   2>/dev/null || true
 sudo cp -r "$STAGED"/share/* "$INSTALL_TARGET/share/" 2>/dev/null || true
 sudo cp -r "$STAGED"/lib/*   "$INSTALL_TARGET/lib/"   2>/dev/null || true

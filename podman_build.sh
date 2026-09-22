@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Builds Aseprite inside a clean Ubuntu 26.04 Podman container.
+# Builds Aseprite inside a clean 24.04 Podman container.
 # Output lands in ./aseprite-install on the host via volume mount.
 #
 # Usage:
@@ -9,7 +9,7 @@ set -e
 #   sudo ./move.sh           # install system-wide when ready
 
 LIBJPEG_TURBO_VERSION="3.1.0"
-IMAGE="ubuntu:26.04"
+IMAGE="ubuntu:24.04"
 WORKDIR="/build"
 
 echo "==> Pulling base image: $IMAGE"
