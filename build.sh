@@ -38,14 +38,16 @@ for attempt in 1 2 3 4 5; do
         echo "    Clone failed, retrying submodules..."
         if [ -d "aseprite" ]; then
             cd aseprite
-            git submodule update --init --recursive || true
+            if git submodule update --init --recursive; then
+                cd "$BUILD_DIR"
+                CLONE_SUCCESS=true
+                break
+            fi
             cd "$BUILD_DIR"
-            CLONE_SUCCESS=true
-            break
-        fi
-        echo "    Waiting 15 seconds before retry..."
-        sleep 15
     fi
+    echo "    Waiting 15 seconds before retry..."
+    sleep 15
+fi
 done
 
 if [ "$CLONE_SUCCESS" = false ]; then
