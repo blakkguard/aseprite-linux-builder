@@ -18,7 +18,7 @@ curl --retry 5 --retry-delay 10 --retry-connrefused -L \
     -o "$BUILD_DIR/skia/third_party/externals/icu/flutter/icudtl.dat"
 
 echo "==> Downloading pre-built Skia..."
-wget --inet4-only --tries=5 --read-timeout=60 --waitretry=15 \
+wget --inet4-only --tries=5 --read-timeout=60 --waitretry=15 --progress=bar:force \
     "https://github.com/aseprite/skia/releases/download/${SKIA_RELEASE}/${SKIA_ZIP}"
 unzip -o ${SKIA_ZIP} -d "$BUILD_DIR/skia"
 rm -f ${SKIA_ZIP}
