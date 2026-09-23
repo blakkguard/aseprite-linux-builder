@@ -12,9 +12,7 @@ On Linux, Aseprite can be built inside of a clean Ubuntu 24.04 podman container,
 
 ---
 
-## Linux
-
-### Quick Start
+## Quick Start
 
 You need `git`. That's it.
 
