@@ -29,7 +29,7 @@ for attempt in 1 2 3 4 5; do
     echo "    Clone attempt $attempt of 5..."
     if git \
         -c http.connectTimeout=30 \
-        -c http.lowSpeedLimit=10000 \
+        -c http.lowSpeedLimit=51200 \
         -c http.lowSpeedTime=15 \
         clone --recursive --depth 1 -b ${ASEPRITE_VERSION} https://github.com/aseprite/aseprite.git; then
         CLONE_SUCCESS=true
