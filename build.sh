@@ -30,7 +30,7 @@ for attempt in 1 2 3 4 5; do
     if git \
         -c http.connectTimeout=30 \
         -c http.lowSpeedLimit=51200 \
-        -c http.lowSpeedTime=15 \
+        -c http.lowSpeedTime=5 \
         clone --recursive --depth 1 -b ${ASEPRITE_VERSION} https://github.com/aseprite/aseprite.git; then
         CLONE_SUCCESS=true
         break
