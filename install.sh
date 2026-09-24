@@ -10,8 +10,12 @@ echo "    isn't needed again at the end."
 sudo -v
 ( while true; do sudo -v; sleep 60; done ) &
 SUDO_KEEP_ALIVE=$!
-trap "kill $SUDO_KEEP_ALIVE 2>/dev/null" EXIT
+cleanup() {
+    kill "$SUDO_KEEP_ALIVE" 2>/dev/null || true
+    wait "$SUDO_KEEP_ALIVE" 2>/dev/null || true
+}
 
+trap cleanup EXIT
 # ── Detect if already running from inside the repo ───────────────────────────
 if [ -f "$SCRIPT_DIR/podman_build.sh" ]; then
     echo "==> Running from existing directory: $SCRIPT_DIR"
