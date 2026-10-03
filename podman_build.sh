@@ -1,16 +1,13 @@
 #!/bin/bash
 set -e
 
-# Builds Aseprite inside a clean 24.04 Podman container.
-# Output lands in ./aseprite-install on the host via volume mount.
-#
-# Usage:
-#   ./podman_build.sh        # builds and stages only
-#   sudo ./move.sh           # install system-wide when ready
-
 LIBJPEG_TURBO_VERSION="3.1.0"
 IMAGE="ubuntu:24.04"
 WORKDIR="/build"
+CACHE_DIR="$HOME/aseprite-cache"
+
+# Ensure host cache directory exists
+mkdir -p "$CACHE_DIR"
 
 echo "==> Pulling base image: $IMAGE"
 podman pull "$IMAGE"
@@ -19,6 +16,7 @@ echo "==> Running build inside container..."
 podman run --rm \
     --network host \
     -v "$(pwd):$WORKDIR:Z" \
+    -v "$CACHE_DIR:/cache:Z" \
     -w "$WORKDIR" \
     "$IMAGE" \
     bash -c '
@@ -51,11 +49,19 @@ podman run --rm \
             gn
 
         # ── libjpeg-turbo ────────────────────────────────────────────────────
-        echo "==> Building libjpeg-turbo '"$LIBJPEG_TURBO_VERSION"'..."
+        echo "==> Building libjpeg-turbo '"$LIBJPEG_TURBO_VERSION"' from cache..."
         WORK_DIR="$(mktemp -d)"
         cd "$WORK_DIR"
-        wget "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/'"$LIBJPEG_TURBO_VERSION"'/libjpeg-turbo-'"$LIBJPEG_TURBO_VERSION"'.tar.gz"
-        tar -xzf "libjpeg-turbo-'"$LIBJPEG_TURBO_VERSION"'.tar.gz"
+        
+        # Check if archive exists in mounted /cache, download if missing
+        if [ ! -f "/cache/libjpeg-turbo-'"$LIBJPEG_TURBO_VERSION"'.tar.gz" ]; then
+            echo "--> Cache miss: downloading libjpeg-turbo..."
+            wget -O "/cache/libjpeg-turbo-'"$LIBJPEG_TURBO_VERSION"'.tar.gz" \
+                "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/'"$LIBJPEG_TURBO_VERSION"'/libjpeg-turbo-'"$LIBJPEG_TURBO_VERSION"'.tar.gz"
+        fi
+
+        tar -xzf "/cache/libjpeg-turbo-'"$LIBJPEG_TURBO_VERSION"'.tar.gz" -C "$WORK_DIR"
+        
         cmake \
             -S "$WORK_DIR/libjpeg-turbo-'"$LIBJPEG_TURBO_VERSION"'" \
             -B "$WORK_DIR/libjpeg-turbo-build" \
